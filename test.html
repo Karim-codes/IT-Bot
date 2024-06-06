@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/qna"></script>
+</head>
+<body>
+
+    <h1>SyncSupport</h1>
+
+    
+    <h3>Data</h3>
+    <p id="passage">If you lose your internet connection check if your modem or router is properly connected. Sometimes, restarting your router can solve the issue. <br>
+    <hr>
+    If you can't access your email ensure your internet connection is stable. Also, check if your email server settings are correctly configured.
+    <hr>
+    If your computer is slow try closing unnecessary applications because running too many programs at once clearing your temporary files to improve performance.
+    <hr>
+    If a software installation fails make sure your computer meets the software's system requirements and that you have sufficient permissions to install new software.
+    <hr>
+    If your printer not printing check that it's connected to your computer, and has enough paper and ink. A printer driver update might also resolve the issue.</p>
+    <hr>
+    <hr>
+    <br>
+    <!-- Input for user to type a question -->
+    <h2>Ask Agent Questions below</h2>
+    <input type="text" id="user-question" placeholder="Ask a question...">
+    <button onclick="findAnswer()">Ask</button>
+    <br>
+    <br>
+    
+
+    <script>
+        //"what to do if i lose connection?";
+        //"i am unable to access email?""
+        //"what to do if printer not printing";
+        //"what to do if can't access email";
+        //"what to do if my computer running slow?";
+        //"what to do? software installation fails?"
+        function findAnswer() {
+            const passage = document.getElementById('passage').innerText; // Use innerText to avoid HTML tags
+            const question = document.getElementById('user-question').value; // Get question from input
+            qna.load().then(model => {
+                model.findAnswers(question, passage).then(answers => {
+                    console.log(answers);
+                    if (answers.length > 0) { // Check if there is at least one answer
+                        document.getElementById('answer').innerHTML = "Agent AI: " + answers[0].text;
+                    } else {
+                        document.getElementById('answer').innerHTML = "No answer found.";
+                    }
+                });
+            });
+        }
+    </script>
+    <br>
+    <div id="answer"></div>
+</body>
+</html>
